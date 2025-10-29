@@ -1,3 +1,4 @@
+"use client";
 import { getUserData } from "@/services/auth/auth.service";
 import { IUser } from "@/types/user.types";
 import {
@@ -14,6 +15,7 @@ interface IUserProvider {
   setUser: (user: IUser | null) => void;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  refetchUser: () => Promise<void>;
 }
 
 const UserContext = createContext<IUserProvider | null>(null);
@@ -22,16 +24,28 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const handleUser = async () => {
-    const userData = await getUserData();
-    setUser(userData);
-    setIsLoading(false);
+    try {
+      const userData = await getUserData();
+      setUser(userData);
+      setIsLoading(false);
+    } catch {
+      setUser(null);
+    }
   };
   useEffect(() => {
     handleUser();
-  }, [isLoading]);
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        isLoading,
+        setIsLoading,
+        refetchUser: handleUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
@@ -39,7 +53,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useUser = () => {
   const context = useContext(UserContext);
-  if (context === undefined) {
+  if (context === null) {
     throw new Error("User Context Must Use Under User Provider");
   }
   return context;

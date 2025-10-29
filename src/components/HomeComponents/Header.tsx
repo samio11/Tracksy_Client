@@ -6,9 +6,26 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useState } from "react";
 import { IoCar } from "react-icons/io5";
 import Link from "next/link";
+import { useUser } from "@/context/UserContext";
+import Loader from "@/app/(commonLayout)/loading";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { toast } from "sonner";
+import { logout } from "@/services/auth/auth.service";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, isLoading, refetchUser } = useUser();
+  if (isLoading) return <Loader></Loader>;
+
+  console.log(user, isLoading);
   const navLinks = (
     <>
       <Link
@@ -35,6 +52,18 @@ export function Header() {
     </>
   );
 
+  const handleLogout = async () => {
+    const toastId = toast.loading("User Logging Out...");
+    try {
+      await logout();
+      toast.success("User Logout Done", { id: toastId });
+      await refetchUser();
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err?.message, { id: toastId });
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,12 +88,45 @@ export function Header() {
           <div className="hidden md:flex items-center gap-8">{navLinks}</div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost">Sign In</Button>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-              Get Started
-            </Button>
-          </div>
+          {user ? (
+            <div className="hidden md:flex items-center gap-4">
+              {/* User Info */}
+              <div className="flex items-center gap-3 bg-gradient-to-r from-blue-600/10 to-purple-600/10 px-4 py-2 rounded-full border border-blue-600/20">
+                <div className="flex flex-col text-right leading-tight">
+                  <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    {user.role}
+                  </span>
+                  <span className="text-xs text-muted-foreground truncate max-w-[150px]">
+                    {user.email}
+                  </span>
+                </div>
+                <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+              </div>
+
+              {/* Logout Button */}
+              <Button
+                variant="outline"
+                onClick={() => handleLogout()}
+                className="border-blue-600 text-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 hover:text-white transition-all"
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-4">
+              <Button
+                variant="ghost"
+                className="hover:text-blue-600 transition-all font-medium"
+              >
+                <Link href={"/login"}>Login</Link>
+              </Button>
+              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md">
+                Get Started
+              </Button>
+            </div>
+          )}
 
           {/* Mobile menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
