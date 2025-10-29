@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -11,6 +12,7 @@ export const createRide = async (payload: FieldValues) => {
       },
       body: JSON.stringify(payload),
     });
+    revalidateTag("ride", "max");
     const result = await res.json();
     return result;
   } catch (err) {
@@ -30,6 +32,7 @@ export const driverAcceptRide = async (payload: FieldValues) => {
         body: JSON.stringify(payload),
       }
     );
+    revalidateTag("ride", "max");
     const result = await res.json();
     return result;
   } catch (err) {
@@ -49,6 +52,7 @@ export const driverStartRide = async (payload: FieldValues) => {
         body: JSON.stringify(payload),
       }
     );
+    revalidateTag("ride", "max");
     const result = await res.json();
     return result;
   } catch (err) {
@@ -68,6 +72,7 @@ export const driverCompleteRide = async (payload: FieldValues) => {
         body: JSON.stringify(payload),
       }
     );
+    revalidateTag("ride", "max");
     const result = await res.json();
     return result;
   } catch (err) {
@@ -87,6 +92,7 @@ export const driverCancelRide = async (payload: FieldValues) => {
         body: JSON.stringify(payload),
       }
     );
+    revalidateTag("ride", "max");
     const result = await res.json();
     return result;
   } catch (err) {
@@ -97,6 +103,9 @@ export const driverGetAllRide = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/ride/get-all`, {
       method: "GET",
+      next: {
+        tags: ["ride"],
+      },
     });
     const result = await res.json();
     return result;

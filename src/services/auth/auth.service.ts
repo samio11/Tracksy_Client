@@ -1,6 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
+import { jwtDecode } from "jwt-decode";
 
 export const login = async (payload: FieldValues) => {
   try {
@@ -118,6 +119,21 @@ export const googleLogin = async () => {
     });
     const result = await res.json();
     return result;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getUserData = async () => {
+  try {
+    const accessToken = (await cookies()).get("accessToken")?.value;
+    let decode = null;
+    if (accessToken) {
+      decode = await jwtDecode(accessToken);
+      return decode;
+    } else {
+      return null;
+    }
   } catch (err) {
     throw err;
   }

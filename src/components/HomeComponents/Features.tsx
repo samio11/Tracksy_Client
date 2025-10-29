@@ -12,9 +12,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Badge } from "./ui/badge";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
+} from "../ui/card";
+import { Badge } from "../ui/badge";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
 
 const features = [
   {

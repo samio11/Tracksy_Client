@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 export const createRating = async (payload: FieldValues) => {
@@ -15,6 +16,7 @@ export const createRating = async (payload: FieldValues) => {
         body: JSON.stringify(payload),
       }
     );
+    revalidateTag("rating", "max");
     const result = await res.json();
     return result;
   } catch (err) {
@@ -30,6 +32,9 @@ export const getAllRating = async () => {
         method: "GET",
         headers: {
           Authorization: `${(await cookies()).get("accessToken")?.value}`,
+        },
+        next: {
+          tags: ["rating"],
         },
       }
     );

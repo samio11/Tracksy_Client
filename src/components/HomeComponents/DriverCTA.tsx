@@ -1,8 +1,8 @@
 import { Car, TrendingUp, Clock, Shield, ArrowRight } from "lucide-react";
-import { Button } from "./ui/button";
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 const benefits = [
   {

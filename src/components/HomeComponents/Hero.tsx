@@ -6,12 +6,12 @@ import {
   Zap,
   TrendingUp,
 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Separator } from "./ui/separator";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Separator } from "../ui/separator";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 export function Hero() {
   return (

@@ -1,8 +1,8 @@
 "use client";
 import { Menu, X, Sparkles } from "lucide-react";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useState } from "react";
 import { IoCar } from "react-icons/io5";
 

@@ -1,9 +1,8 @@
-import { DriverCTA } from "@/components/DriverCTA";
-import { Features } from "@/components/Features";
-
-import { Hero } from "@/components/Hero";
-import { HowItWorks } from "@/components/HowItWorks";
-import { Testimonials } from "@/components/Testimonials";
+import { DriverCTA } from "@/components/HomeComponents/DriverCTA";
+import { Features } from "@/components/HomeComponents/Features";
+import { Hero } from "@/components/HomeComponents/Hero";
+import { HowItWorks } from "@/components/HomeComponents/HowItWorks";
+import { Testimonials } from "@/components/HomeComponents/Testimonials";
 
 export default function Home() {
   return (
