@@ -5,9 +5,35 @@ import { Badge } from "../ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useState } from "react";
 import { IoCar } from "react-icons/io5";
+import Link from "next/link";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navLinks = (
+    <>
+      <Link
+        href="/"
+        className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+      >
+        Home
+        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+      </Link>
+      <Link
+        href="/about"
+        className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+      >
+        About
+        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+      </Link>
+      <Link
+        href="/contact"
+        className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+      >
+        contact
+        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+      </Link>
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,36 +56,7 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#features"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
-            >
-              Features
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
-            </a>
-            <a
-              href="#how-it-works"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
-            >
-              How It Works
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
-            </a>
-            <a
-              href="#pricing"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
-            >
-              Pricing
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
-            </a>
-            <a
-              href="#testimonials"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
-            >
-              Testimonials
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
-            </a>
-          </div>
+          <div className="hidden md:flex items-center gap-8">{navLinks}</div>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
@@ -78,34 +75,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent>
               <div className="flex flex-col gap-6 mt-8">
-                <a
-                  href="#features"
-                  className="text-lg text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Features
-                </a>
-                <a
-                  href="#how-it-works"
-                  className="text-lg text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  How It Works
-                </a>
-                <a
-                  href="#pricing"
-                  className="text-lg text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Pricing
-                </a>
-                <a
-                  href="#testimonials"
-                  className="text-lg text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Testimonials
-                </a>
+                {navLinks}
                 <div className="flex flex-col gap-3 pt-4 border-t">
                   <Button variant="outline" className="w-full">
                     Sign In
