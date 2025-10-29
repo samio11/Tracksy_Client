@@ -4,9 +4,9 @@ import { getUserData } from "./services/auth/auth.service";
 type TRole = keyof typeof roleBaseRoutes;
 const authRoutes = ["/login", "/register"];
 const roleBaseRoutes = {
-  Admin: [/^\Admin/],
-  Driver: [/^\Driver/],
-  Rider: [/^\Rider/],
+  Admin: [/^\/Admin/],
+  Driver: [/^\/Driver/],
+  Rider: [/^\/Rider/],
 };
 
 export const proxy = async (request: NextRequest) => {
