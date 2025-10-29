@@ -28,7 +28,7 @@ import {
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { login } from "@/services/auth/auth.service";
+import { googleLogin, login } from "@/services/auth/auth.service";
 import { useUser } from "@/context/UserContext";
 
 // ✅ Validation schema
@@ -64,6 +64,16 @@ export function LoginForm({
       } else {
         toast.error("User Login Failed", { id: toastId });
       }
+    } catch (err: any) {
+      console.log(err);
+      toast.error(err?.message, { id: toastId });
+    }
+  }
+  async function googleLoginFn() {
+    const toastId = toast.loading("Redirecting to Google...");
+    try {
+      // Simply redirect the browser to your backend's Google auth endpoint
+      window.location.href = `${process.env.NEXT_PUBLIC_BACKEND}/auth/google`;
     } catch (err: any) {
       console.log(err);
       toast.error(err?.message, { id: toastId });
@@ -137,7 +147,11 @@ export function LoginForm({
 
                   {/* Social Buttons */}
                   <Field className="grid grid-cols-1 gap-4">
-                    <Button variant="outline" type="button">
+                    <Button
+                      onClick={() => googleLoginFn()}
+                      variant="outline"
+                      type="button"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

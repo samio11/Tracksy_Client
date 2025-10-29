@@ -8,15 +8,6 @@ import { IoCar } from "react-icons/io5";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
 import Loader from "@/app/(commonLayout)/loading";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { logout } from "@/services/auth/auth.service";
 
@@ -85,7 +76,18 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">{navLinks}</div>
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks}
+            {user && user.role === "Rider" && (
+              <Link
+                href="/bookRide"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+              >
+                Create Ride
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+              </Link>
+            )}
+          </div>
 
           {/* Desktop CTA */}
           {user ? (

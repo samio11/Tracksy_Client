@@ -1,3 +1,4 @@
+"use server";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
@@ -7,8 +8,8 @@ export const createRide = async (payload: FieldValues) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/ride/create`, {
       method: "POST",
       headers: {
-        Authorization: `${(await cookies()).get("accessToken")?.value}`,
         "Content-type": "application/json",
+        Authorization: `${(await cookies()).get("accessToken")?.value}`,
       },
       body: JSON.stringify(payload),
     });
