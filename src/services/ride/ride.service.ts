@@ -80,7 +80,7 @@ export const driverCompleteRide = async (payload: FieldValues) => {
     throw err;
   }
 };
-export const driverCancelRide = async (payload: FieldValues) => {
+export const riderCancelRide = async (payload: FieldValues) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/ride/cancel-ride`,
@@ -101,13 +101,20 @@ export const driverCancelRide = async (payload: FieldValues) => {
   }
 };
 export const driverGetAllRide = async () => {
+  const token = (await cookies()).get("accessToken")?.value;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/ride/get-all`, {
-      method: "GET",
-      next: {
-        tags: ["ride"],
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/ride/get-ride-info`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `${token}`,
+        },
+        next: {
+          tags: ["ride"],
+        },
+      }
+    );
     const result = await res.json();
     return result;
   } catch (err) {
@@ -121,6 +128,24 @@ export const getARiderInfo = async (id: string) => {
       `${process.env.NEXT_PUBLIC_BACKEND}/ride/get/${id}`,
       {
         method: "GET",
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+export const riderGetHisRideDetails = async (id: string) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/ride/get/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `${token}`,
+        },
       }
     );
     const result = await res.json();
