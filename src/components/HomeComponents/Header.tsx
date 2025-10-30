@@ -89,7 +89,7 @@ export function Header() {
             )}
             {user && user.role === "Admin" && (
               <Link
-                href="/Admin"
+                href="/Admin/state"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
               >
                 Admin Dashboard
@@ -98,10 +98,10 @@ export function Header() {
             )}
             {user && user.role === "Rider" && (
               <Link
-                href="/Rider"
+                href="/Rider/profile"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
               >
-                Admin Dashboard
+                Rider Dashboard
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
               </Link>
             )}

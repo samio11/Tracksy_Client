@@ -18,6 +18,7 @@ import { useUser } from "@/context/UserContext";
 
 import { usePathname } from "next/navigation";
 import AdminAddSideBar from "./Admin/page";
+import RiderAddSideBar from "./Rider/page";
 
 export default function DashboardLayout({
   children,
@@ -32,6 +33,7 @@ export default function DashboardLayout({
     <SidebarProvider>
       {/* Sider */}
       {user && user?.role === "Admin" && <AdminAddSideBar></AdminAddSideBar>}
+      {user && user?.role === "Rider" && <RiderAddSideBar></RiderAddSideBar>}
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b">
           <div className="flex items-center gap-2 px-3">

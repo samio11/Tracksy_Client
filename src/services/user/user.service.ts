@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { FieldValues } from "react-hook-form";
 
 interface IUserQuery {
   page?: number;
@@ -69,6 +70,63 @@ export const adminStates = async () => {
       {
         method: "GET",
         headers: { Authorization: `${token}` },
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getAUser = async (id: string) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/user/get/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+export const getAUserRideCount = async () => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/user/ride-count`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+export const updateAUserData = async (id: string, payload: FieldValues) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/user/update/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `${token}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
       }
     );
     const result = await res.json();

@@ -19,20 +19,12 @@ import Link from "next/link";
 const data = {
   navMain: [
     {
-      title: "TrackSy Admin Dashboard",
-      url: "/Admin/state",
+      title: "TrackSy Rider Dashboard",
+      url: "/Rider/profile",
       items: [
         {
-          title: "Manage User",
-          url: "/Admin/manage-user",
-        },
-        {
-          title: "Manage Rating",
-          url: "/Admin/manage-rating",
-        },
-        {
-          title: "Manage Ride",
-          url: "/Admin/manage-ride",
+          title: "Manage Rider",
+          url: "/Rider/manage-rider",
         },
         {
           title: "Back Home",
@@ -45,7 +37,7 @@ const data = {
 
 interface AdminAddSideBarProps extends React.ComponentProps<typeof Sidebar> {}
 
-export default function AdminAddSideBar({
+export default function RiderAddSideBar({
   ...props
 }: AdminAddSideBarProps): React.JSX.Element {
   return (
