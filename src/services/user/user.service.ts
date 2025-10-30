@@ -1,0 +1,79 @@
+"use server";
+
+import { cookies } from "next/headers";
+
+interface IUserQuery {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+}
+
+export const getAllUser = async (query: IUserQuery) => {
+  const token = (await cookies()).get("accessToken")?.value;
+  const params = new URLSearchParams();
+  if (query.page) params.append("page", query.page.toString());
+  if (query.limit) params.append("limit", query.limit.toString());
+  if (query.searchTerm) params.append("searchTerm", query.searchTerm);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND}/user/get?${params.toString()}`,
+    {
+      method: "GET",
+      headers: { Authorization: `${token}` },
+      cache: "no-store",
+    }
+  );
+  return res.json();
+};
+
+export const changeUserVerification = async (
+  userId: string,
+  isVerify: boolean
+) => {
+  const token = (await cookies()).get("accessToken")?.value;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND}/user/change-verification`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+      body: JSON.stringify({ userId, isVerify }),
+    }
+  );
+
+  const result = await res.json();
+  if (!res.ok)
+    throw new Error(result.message || "Failed to change verification");
+  return result;
+};
+
+export const adminDeleteUser = async (userId: string) => {
+  const token = (await cookies()).get("accessToken")?.value;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND}/user/delete/${userId}`,
+    {
+      method: "DELETE",
+      headers: { Authorization: `${token}` },
+    }
+  );
+  return res.json();
+};
+
+export const adminStates = async () => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/user/admin-states`,
+      {
+        method: "GET",
+        headers: { Authorization: `${token}` },
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};

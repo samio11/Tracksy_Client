@@ -23,6 +23,10 @@ const data = {
       url: "/Admin",
       items: [
         {
+          title: "Admin Status",
+          url: "/Admin/state",
+        },
+        {
           title: "Manage User",
           url: "/Admin/manage-user",
         },
@@ -34,14 +38,20 @@ const data = {
           title: "Manage Ride",
           url: "/Admin/manage-ride",
         },
+        {
+          title: "Back Home",
+          url: "/",
+        },
       ],
     },
   ],
 };
 
+interface AdminAddSideBarProps extends React.ComponentProps<typeof Sidebar> {}
+
 export default function AdminAddSideBar({
   ...props
-}: React.ComponentProps<typeof Sidebar>) {
+}: AdminAddSideBarProps): React.JSX.Element {
   return (
     <Sidebar {...props}>
       <SidebarHeader>

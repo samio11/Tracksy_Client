@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,8 +15,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useUser } from "@/context/UserContext";
-import AdminAddSideBar from "./Admin/page";
+
 import { usePathname } from "next/navigation";
+import AdminAddSideBar from "./Admin/page";
 
 export default function DashboardLayout({
   children,
@@ -37,11 +39,7 @@ export default function DashboardLayout({
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  {/* <BreadcrumbLink href="#">
-                    TrackSy ({user?.role})
-                  </BreadcrumbLink> */}
-                </BreadcrumbItem>
+                <BreadcrumbItem className="hidden md:block"></BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
                   <BreadcrumbPage> TrackSy - {modifyPathName}</BreadcrumbPage>

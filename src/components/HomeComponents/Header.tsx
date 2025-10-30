@@ -87,6 +87,33 @@ export function Header() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
               </Link>
             )}
+            {user && user.role === "Admin" && (
+              <Link
+                href="/Admin"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+              >
+                Admin Dashboard
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+              </Link>
+            )}
+            {user && user.role === "Rider" && (
+              <Link
+                href="/Rider"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+              >
+                Admin Dashboard
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+              </Link>
+            )}
+            {user && user.role === "Driver" && (
+              <Link
+                href="/Driver"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+              >
+                Admin Dashboard
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+              </Link>
+            )}
           </div>
 
           {/* Desktop CTA */}
