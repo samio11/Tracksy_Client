@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "TrackSy",
   description: "A Ride Shearing Platform",
+  icons: {
+    icon: "car.svg",
+  },
 };
 
 export default function RootLayout({

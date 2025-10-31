@@ -121,6 +121,37 @@ export const driverGetAllRide = async () => {
     throw err;
   }
 };
+export const adminGetAllRide = async ({
+  page,
+  limit,
+}: {
+  page?: number;
+  limit?: number;
+}) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (page) queryParams.append("page", String(page));
+    if (limit) queryParams.append("limit", String(limit));
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/ride/get-all?${
+        queryParams.toString() || ""
+      }`,
+      {
+        method: "GET",
+        next: {
+          tags: ["ride"],
+        },
+      }
+    );
+
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
 
 export const getARiderInfo = async (id: string) => {
   try {

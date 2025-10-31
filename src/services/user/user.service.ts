@@ -135,3 +135,41 @@ export const updateAUserData = async (id: string, payload: FieldValues) => {
     throw err;
   }
 };
+export const driverCreateVehicle = async (payload: FormData) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/user/driver/create/vehicle`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `${token}`,
+          "Content-type": "application/json",
+        },
+        body: payload,
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+export const driverDeleteVehicle = async (id: string) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/user/driver/delete/vehicle/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
