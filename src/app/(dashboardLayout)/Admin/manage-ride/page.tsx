@@ -12,8 +12,18 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, MapPin, Clock, Car, Eye, Route } from "lucide-react";
+import {
+  Loader2,
+  MapPin,
+  Clock,
+  Car,
+  Eye,
+  Route,
+  SendHorizontal,
+} from "lucide-react";
 import { adminGetAllRide, getARiderInfo } from "@/services/ride/ride.service";
+
+import { adminSendDiscountOTP } from "@/services/user/user.service";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -47,12 +57,14 @@ export default function ManageRide() {
   const [rides, setRides] = useState<IRide[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRide, setSelectedRide] = useState<any>(null);
+  const [sending, setSending] = useState(false);
 
   // Pagination states
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [limit] = useState(3);
 
+  // 🔹 Fetch all rides
   const fetchRides = async () => {
     setLoading(true);
     try {
@@ -67,12 +79,31 @@ export default function ManageRide() {
     }
   };
 
+  // 🔹 Fetch single ride details
   const fetchRideDetails = async (id: string) => {
     try {
       const res = await getARiderInfo(id);
       setSelectedRide(res?.data || null);
     } catch {
       toast.error("Failed to fetch ride details");
+    }
+  };
+
+  // 🔹 Send discount OTP (only for requested rides)
+  const handleSendDiscount = async (email: string) => {
+    setSending(true);
+    try {
+      const res = await adminSendDiscountOTP({ email });
+      if (res.success) {
+        toast.success("Discount OTP sent successfully!");
+      } else {
+        toast.error(res.message || "Failed to send OTP");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error sending discount OTP");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -155,7 +186,8 @@ export default function ManageRide() {
                           <TableCell>
                             {new Date(ride.createdAt).toLocaleDateString()}
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="space-y-2">
+                            {/* 👁 View Ride */}
                             <Dialog>
                               <DialogTrigger asChild>
                                 <Button
@@ -260,6 +292,28 @@ export default function ManageRide() {
                                           )}
                                         </div>
                                       </div>
+
+                                      {/* 🚀 Send Discount OTP inside modal */}
+                                      {ride.rideStatus === "requested" && (
+                                        <div className="pt-4 flex justify-end">
+                                          <Button
+                                            onClick={() =>
+                                              handleSendDiscount(
+                                                ride.rider.email
+                                              )
+                                            }
+                                            disabled={sending}
+                                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                                          >
+                                            {sending ? (
+                                              <Loader2 className="h-4 w-4 animate-spin mr-1" />
+                                            ) : (
+                                              <SendHorizontal className="h-4 w-4 mr-1" />
+                                            )}
+                                            Send Discount OTP
+                                          </Button>
+                                        </div>
+                                      )}
                                     </div>
                                   </DialogContent>
                                 )}

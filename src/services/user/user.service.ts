@@ -155,6 +155,26 @@ export const driverCreateVehicle = async (payload: FormData) => {
     throw err;
   }
 };
+export const adminSendDiscountOTP = async (payload: FieldValues) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/ride/discount`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `${token}`,
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+    const result = await res.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
 export const driverDeleteVehicle = async (id: string) => {
   try {
     const token = (await cookies()).get("accessToken")?.value;
