@@ -115,6 +115,45 @@ export const getAUserRideCount = async () => {
     throw err;
   }
 };
+export const driverCompleteRide = async (
+  query: Record<string, string> = {}
+) => {
+  try {
+    const token = (await cookies()).get("accessToken")?.value;
+
+    const queryString = new URLSearchParams(query).toString();
+
+    const url = `${process.env.NEXT_PUBLIC_BACKEND}/user/driver-complete-ride${
+      queryString ? `?${queryString}` : ""
+    }`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `Failed to fetch driver complete rides: ${res.statusText}`
+      );
+    }
+
+    const result = await res.json();
+
+    return {
+      success: result.success,
+      message: result.message,
+      rides: result.data?.data || [],
+      meta: result.data?.meta || {},
+    };
+  } catch (err) {
+    console.error("Error fetching completed rides:", err);
+    throw err;
+  }
+};
+
 export const updateAUserData = async (id: string, payload: FieldValues) => {
   try {
     const token = (await cookies()).get("accessToken")?.value;

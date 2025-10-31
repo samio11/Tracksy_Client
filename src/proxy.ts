@@ -34,6 +34,7 @@ export const config = {
   matcher: [
     "/login",
     "/register",
+
     "/Admin",
     "/Admin/:page",
     "/Driver",
