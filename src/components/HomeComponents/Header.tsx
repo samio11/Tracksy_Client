@@ -145,14 +145,8 @@ export function Header() {
             </div>
           ) : (
             <div className="hidden md:flex items-center gap-4">
-              <Button
-                variant="ghost"
-                className="hover:text-blue-600 transition-all font-medium"
-              >
-                <Link href={"/login"}>Login</Link>
-              </Button>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md">
-                Get Started
+                <Link href={"/login"}>Login</Link>
               </Button>
             </div>
           )}
@@ -167,12 +161,45 @@ export function Header() {
             <SheetContent>
               <div className="flex flex-col gap-6 mt-8">
                 {navLinks}
+                {user && user.role === "Rider" && (
+                  <Link
+                    href="/bookRide"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+                  >
+                    Create Ride
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+                  </Link>
+                )}
+                {user && user.role === "Admin" && (
+                  <Link
+                    href="/Admin/state"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+                  >
+                    Admin Dashboard
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+                  </Link>
+                )}
+                {user && user.role === "Rider" && (
+                  <Link
+                    href="/Rider/profile"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+                  >
+                    Rider Dashboard
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+                  </Link>
+                )}
+                {user && user.role === "Driver" && (
+                  <Link
+                    href="/Driver/profile"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+                  >
+                    Driver Dashboard
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all" />
+                  </Link>
+                )}
                 <div className="flex flex-col gap-3 pt-4 border-t">
-                  <Button variant="outline" className="w-full">
-                    Sign In
-                  </Button>
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
-                    Get Started
+                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md">
+                    <Link href={"/login"}>Login</Link>
                   </Button>
                 </div>
               </div>

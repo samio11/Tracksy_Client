@@ -11,6 +11,7 @@ import {
   Sparkles,
   ArrowRight,
   MapPinned,
+  Tag,
 } from "lucide-react";
 import {
   Card,
@@ -50,6 +51,8 @@ export default function BookRide() {
     endRide: null,
   });
   const [distance, setDistance] = useState<number | null>(null);
+  const [promoCode, setPromoCode] = useState<string>("");
+  const [isPromoApplied, setIsPromoApplied] = useState<boolean>(false);
 
   // Reverse geocoding function
   const getAddress = async (lat: number, lng: number): Promise<string> => {
@@ -69,7 +72,6 @@ export default function BookRide() {
     const calculateDistance = async () => {
       if (!rideData.startRide || !rideData.endRide) {
         setDistance(null);
-
         return;
       }
 
@@ -113,6 +115,14 @@ export default function BookRide() {
     });
   };
 
+  const handlePromoCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPromoCode(e.target.value);
+    // Remove promo application when user starts typing again
+    if (isPromoApplied) {
+      setIsPromoApplied(false);
+    }
+  };
+
   const handleBookRide = async () => {
     const toastId = toast.loading("Ride Creating...");
     if (!rideData.startRide || !rideData.endRide) {
@@ -133,17 +143,17 @@ export default function BookRide() {
         lang: rideData.endRide.lng,
       },
       rider: user?.id,
+      ...(promoCode && { promoCode }), // Only include promoCode if it exists
     };
-
-    // console.log("Booking Data:", JSON.stringify(bookingData, null, 2));
-
-    // toast.success("Ride booked successfully!");
 
     try {
       const res = await createRide(bookingData);
       console.log(res);
       if (res?.success) {
         toast.success("Ride Created Done!!!", { id: toastId });
+        // Reset form
+        setPromoCode("");
+        setIsPromoApplied(false);
       } else {
         toast.error("Ride created failed", { id: toastId });
       }
@@ -355,6 +365,51 @@ export default function BookRide() {
 
             {/* Right Column - Booking Form */}
             <div className="space-y-6">
+              {/* Coupon Section */}
+              <Card className="border-2 shadow-xl">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Tag className="h-5 w-5 text-green-600" />
+                    Apply Promo Code
+                  </CardTitle>
+                  <CardDescription>
+                    Enter your discount code for 15% off
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="promo-code" className="text-sm font-medium">
+                      Promo Code
+                    </Label>
+                    <Input
+                      id="promo-code"
+                      placeholder="Enter promo code"
+                      value={promoCode}
+                      onChange={handlePromoCodeChange}
+                      className="w-full"
+                    />
+                  </div>
+
+                  {isPromoApplied && (
+                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2 text-green-700">
+                        <Sparkles className="h-4 w-4" />
+                        <span className="text-sm font-medium">
+                          Promo code applied! 15% discount will be applied to
+                          your ride.
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>• Enter your discount OTP code here</p>
+                    <p>• 15% discount will be applied to your ride fare</p>
+                    <p>• Code validation happens during ride creation</p>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Ride Details */}
               <Card className="border-2 shadow-xl sticky top-24">
                 <CardHeader>
@@ -377,6 +432,17 @@ export default function BookRide() {
                             {distance.toFixed(2)} km
                           </span>
                         </div>
+                        {promoCode && (
+                          <div className="flex items-center justify-between pt-2 border-t border-blue-100">
+                            <span className="text-sm text-muted-foreground flex items-center gap-1">
+                              <Tag className="h-3 w-3 text-green-600" />
+                              Promo Applied
+                            </span>
+                            <span className="text-sm font-medium text-green-600">
+                              15% OFF
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </>
                   )}
@@ -385,10 +451,21 @@ export default function BookRide() {
                     onClick={handleBookRide}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
                     size="lg"
+                    disabled={!rideData.startRide || !rideData.endRide}
                   >
                     Book Ride Now
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
+
+                  {promoCode && (
+                    <div className="text-center">
+                      <p className="text-xs text-muted-foreground">
+                        Promo code{" "}
+                        <span className="font-mono">{promoCode}</span> will be
+                        validated during booking
+                      </p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>

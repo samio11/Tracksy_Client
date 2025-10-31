@@ -30,6 +30,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { googleLogin, login } from "@/services/auth/auth.service";
 import { useUser } from "@/context/UserContext";
+import Link from "next/link";
 
 // ✅ Validation schema
 const formSchema = z.object({
@@ -167,10 +168,22 @@ export function LoginForm({
 
                   {/* Sign up */}
                   <FieldDescription className="text-center">
-                    Don&apos;t have an account?{" "}
-                    <a href="#" className="text-blue-500 underline">
-                      Sign up
-                    </a>
+                    Don&apos;t have a Rider account?{" "}
+                    <Link
+                      href="/register-rider"
+                      className="text-blue-500 underline"
+                    >
+                      Register Now
+                    </Link>
+                  </FieldDescription>
+                  <FieldDescription className="text-center">
+                    Don&apos;t have a Driver account?{" "}
+                    <Link
+                      href="/register-driver"
+                      className="text-blue-500 underline"
+                    >
+                      Register Now
+                    </Link>
                   </FieldDescription>
                 </FieldGroup>
               </form>
