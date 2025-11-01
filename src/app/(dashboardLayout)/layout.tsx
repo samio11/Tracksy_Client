@@ -1,5 +1,8 @@
 "use client";
 
+import AdminAddSideBar from "@/components/DashBoardSideBars/AdminAddSideBar";
+import DriverAddSideBar from "@/components/DashBoardSideBars/DriverAddSideBar";
+import RiderAddSideBar from "@/components/DashBoardSideBars/RiderAddSideBar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,9 +20,6 @@ import {
 import { useUser } from "@/context/UserContext";
 
 import { usePathname } from "next/navigation";
-import AdminAddSideBar from "./Admin/page";
-import RiderAddSideBar from "./Rider/page";
-import DriverAddSideBar from "./Driver/page";
 
 export default function DashboardLayout({
   children,

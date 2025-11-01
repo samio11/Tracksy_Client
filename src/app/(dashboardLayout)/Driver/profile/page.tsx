@@ -55,13 +55,17 @@ export default function DriverProfilePage() {
     type: "Car",
   });
   const { user: driverData } = useUser();
-  const driverId = driverData!.id;
 
   useEffect(() => {
+    // Guard clause: only fetch if driverData exists
+    if (!driverData?.id) {
+      return;
+    }
+
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await getAUser(driverId);
+        const res = await getAUser(driverData.id);
         if (res.success) {
           setUser(res.data);
           toast.success("Profile loaded successfully!");
@@ -75,7 +79,7 @@ export default function DriverProfilePage() {
       }
     };
     fetchData();
-  }, []);
+  }, [driverData?.id]); // Added dependency
 
   const handleCreateVehicle = async () => {
     if (!vehicleImage) {
@@ -85,6 +89,11 @@ export default function DriverProfilePage() {
 
     if (!form.model || !form.year || !form.maxCapacity) {
       toast.error("Please fill all required fields!");
+      return;
+    }
+
+    if (!user?._id || !driverData?.id) {
+      toast.error("User data not available");
       return;
     }
 
@@ -106,7 +115,7 @@ export default function DriverProfilePage() {
         setVehicleImage(null);
 
         // Refresh user data
-        const updatedUser = await getAUser(driverId);
+        const updatedUser = await getAUser(driverData.id);
         if (updatedUser.success) setUser(updatedUser.data);
       } else {
         toast.error("Failed to add vehicle");
@@ -143,11 +152,15 @@ export default function DriverProfilePage() {
             variant="destructive"
             onClick={async () => {
               toast.dismiss(t);
+              if (!driverData?.id) {
+                toast.error("User data not available");
+                return;
+              }
               try {
                 const res = await driverDeleteVehicle(id);
                 if (res.success) {
                   toast.success("🗑️ Vehicle deleted successfully!");
-                  const updatedUser = await getAUser(driverId);
+                  const updatedUser = await getAUser(driverData.id);
                   if (updatedUser.success) setUser(updatedUser.data);
                 } else {
                   toast.error("Failed to delete vehicle");
@@ -163,6 +176,18 @@ export default function DriverProfilePage() {
       </div>
     ));
   };
+
+  // Show loading state if driver data hasn't loaded yet
+  if (!driverData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-gray-600 font-medium">Loading driver data...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (loading && !user) {
     return (
